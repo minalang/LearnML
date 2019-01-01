@@ -1,6 +1,7 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import random
+import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
@@ -43,8 +44,15 @@ with tf.Session() as sess:
 
     #Get one and prdict
     r = random.randint(0, mnist.test.num_examples-1)
+
+    #Test one-hot
     print("Label : ", sess.run(tf.argmax(mnist.test.labels[r:r+1], 1)))
-    print("Prediction :", sess.run(tf.arg_max(hypothesis, 1), 
-        feed_dict={X:mnist.test.images[r:r+1]}))
-    plt.imshow(mnist.test.images[r:r+1].reshape(28,28), cmap='Greys', interpolation='nearest')
-    plt.show()
+    print("Prediction :", sess.run(tf.arg_max(hypothesis, 1), feed_dict={X:mnist.test.images[r:r+1]}))
+    #plt.imshow(mnist.test.images[r:r+1].reshape(28,28), cmap='Greys', interpolation='nearest')
+    #plt.show()
+
+    #Test Probability
+    r = random.randint(0, mnist.test.num_examples-1)
+    print("Label : ", sess.run(tf.argmax(mnist.test.labels[r:r+1], 1)))
+    prop = sess.run(hypothesis, feed_dict={X:mnist.test.images[r:r+1]}) * 100
+    print("Prediction : ", prop)
